@@ -5,7 +5,7 @@ setlocal EnableDelayedExpansion
 :MENU
 cls
 echo ========================================
-echo   Trae 清理工具 (极简版)
+echo   Trae ^& Cursor 清理工具 (增强版)
 echo ========================================
 echo.
 echo [1/4] 正在扫描系统...
@@ -14,6 +14,7 @@ echo.
 REM --- 初始化变量 ---
 set "intl_found=0"
 set "cn_found=0"
+set "cursor_found=0"
 
 REM --- 扫描国际版 ---
 if exist "%APPDATA%\Trae" set "intl_found=1"
@@ -29,22 +30,34 @@ if exist "%USERPROFILE%\.trae-cn" set "cn_found=1"
 reg query "HKCU\Software\Trae CN" >nul 2>&1
 if !errorlevel! equ 0 set "cn_found=1"
 
+REM --- 扫描 Cursor ---
+if exist "%APPDATA%\Cursor" set "cursor_found=1"
+if exist "%LOCALAPPDATA%\Cursor" set "cursor_found=1"
+if exist "%LOCALAPPDATA%\Programs\cursor" set "cursor_found=1"
+if exist "%USERPROFILE%\.cursor" set "cursor_found=1"
+reg query "HKCU\Software\Cursor" >nul 2>&1
+if !errorlevel! equ 0 set "cursor_found=1"
+
 REM --- 设置显示状态 ---
 if "!intl_found!"=="1" (set "msg_intl=[已发现残余]") else (set "msg_intl=[未发现]")
 if "!cn_found!"=="1" (set "msg_cn=[已发现残余]") else (set "msg_cn=[未发现]")
+if "!cursor_found!"=="1" (set "msg_cursor=[已发现残余]") else (set "msg_cursor=[未发现]")
 
 echo 扫描完成。
 echo.
 
-echo [2/4] 请选择要清理的版本：
+echo [2/4] 请选择要清理的项目：
 echo.
 echo   1. %msg_intl% 清理 Trae 国际版
-echo      (包含: 用户数据、安装目录、插件 .trae、注册表)
+echo      (用户数据、安装目录、插件 .trae、注册表)
 echo.
 echo   2. %msg_cn% 清理 Trae 中文版
-echo      (包含: 用户数据、安装目录、插件 .trae-cn、注册表)
+echo      (用户数据、安装目录、插件 .trae-cn、注册表)
 echo.
-echo   3. 全部清理 (同时清理国际版和中文版)
+echo   3. %msg_cursor% 清理 Cursor IDE
+echo      (用户数据、安装目录、插件 .cursor、注册表)
+echo.
+echo   4. 全部清理 (清理以上所有发现的残余)
 echo.
 echo   0. 退出
 echo.
@@ -56,15 +69,18 @@ if "%choice%"=="0" goto :eof
 
 set "clean_intl=0"
 set "clean_cn=0"
+set "clean_cursor=0"
 
 if "%choice%"=="1" set "clean_intl=1"
 if "%choice%"=="2" set "clean_cn=1"
-if "%choice%"=="3" (
+if "%choice%"=="3" set "clean_cursor=1"
+if "%choice%"=="4" (
     set "clean_intl=1"
     set "clean_cn=1"
+    set "clean_cursor=1"
 )
 
-if "%clean_intl%"=="0" if "%clean_cn%"=="0" goto MENU
+if "%clean_intl%"=="0" if "%clean_cn%"=="0" if "%clean_cursor%"=="0" goto MENU
 
 echo.
 echo [3/4] 正在关闭相关进程...
@@ -76,6 +92,10 @@ if "%clean_intl%"=="1" (
 if "%clean_cn%"=="1" (
     taskkill /F /IM "Trae CN.exe" >nul 2>&1
     echo 已尝试关闭 Trae CN (中文版)
+)
+if "%clean_cursor%"=="1" (
+    taskkill /F /IM "Cursor.exe" >nul 2>&1
+    echo 已尝试关闭 Cursor
 )
 
 echo 等待进程释放资源...
@@ -101,6 +121,28 @@ if "%clean_intl%"=="1" (
     reg query "HKCU\Software\Trae" >nul 2>&1
     if !errorlevel! equ 0 (
         reg delete "HKCU\Software\Trae" /f >nul 2>&1
+        echo [OK] 注册表已清理
+        set /a deleted+=1
+    ) else (
+        echo [SKIP] 注册表无残留
+    )
+    echo.
+)
+
+REM ==========================================
+REM 清理 Cursor
+REM ==========================================
+if "%clean_cursor%"=="1" (
+    echo --- 正在清理 Cursor ---
+    call :CleanDir "%APPDATA%\Cursor" "用户数据(Roaming)"
+    call :CleanDir "%LOCALAPPDATA%\Cursor" "用户数据(Local)"
+    call :CleanDir "%LOCALAPPDATA%\Programs\cursor" "安装目录"
+    call :CleanDir "%USERPROFILE%\.cursor" "插件目录"
+    
+    echo 检查注册表...
+    reg query "HKCU\Software\Cursor" >nul 2>&1
+    if !errorlevel! equ 0 (
+        reg delete "HKCU\Software\Cursor" /f >nul 2>&1
         echo [OK] 注册表已清理
         set /a deleted+=1
     ) else (
@@ -137,6 +179,9 @@ echo --- 清理临时文件 ---
 del /f /q "%TEMP%\Trae*.log" >nul 2>&1
 del /f /q "%TEMP%\Trae*.tmp" >nul 2>&1
 rmdir /s /q "%TEMP%\Trae Crashes" >nul 2>&1
+del /f /q "%TEMP%\Cursor*.log" >nul 2>&1
+del /f /q "%TEMP%\Cursor*.tmp" >nul 2>&1
+rmdir /s /q "%TEMP%\Cursor Crashes" >nul 2>&1
 echo [OK] 临时文件清理尝试完成
 echo.
 
