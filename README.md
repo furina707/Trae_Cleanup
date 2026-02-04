@@ -17,6 +17,7 @@ Trae & Cursor Cleanup Tool is a lightweight, open-source batch script designed t
   - Cleans `AppData\Roaming` & `AppData\Local` (User Data).
   - Cleans Installation directories.
   - Cleans Extensions folders (`.trae`, `.trae-cn`, `.cursor`).
+  - Cleans Desktop Shortcuts.
   - Cleans Registry Keys.
   - Cleans Temporary Files.
 - **⚡ Zero Dependencies**: Pure Windows Batch script. No installation required.

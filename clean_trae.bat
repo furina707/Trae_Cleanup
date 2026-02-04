@@ -117,6 +117,18 @@ if "%clean_intl%"=="1" (
     call :CleanDir "%LOCALAPPDATA%\Programs\Trae" "安装目录"
     call :CleanDir "%USERPROFILE%\.trae" "插件目录"
     
+    echo 检查桌面快捷方式...
+    if exist "%USERPROFILE%\Desktop\Trae.lnk" (
+        del /f /q "%USERPROFILE%\Desktop\Trae.lnk" >nul 2>&1
+        echo [OK] 桌面快捷方式已删除
+        set /a deleted+=1
+    )
+    if exist "%PUBLIC%\Desktop\Trae.lnk" (
+        del /f /q "%PUBLIC%\Desktop\Trae.lnk" >nul 2>&1
+        echo [OK] 公共桌面快捷方式已删除
+        set /a deleted+=1
+    )
+    
     echo 检查注册表...
     reg query "HKCU\Software\Trae" >nul 2>&1
     if !errorlevel! equ 0 (
@@ -139,6 +151,18 @@ if "%clean_cursor%"=="1" (
     call :CleanDir "%LOCALAPPDATA%\Programs\cursor" "安装目录"
     call :CleanDir "%USERPROFILE%\.cursor" "插件目录"
     
+    echo 检查桌面快捷方式...
+    if exist "%USERPROFILE%\Desktop\Cursor.lnk" (
+        del /f /q "%USERPROFILE%\Desktop\Cursor.lnk" >nul 2>&1
+        echo [OK] 桌面快捷方式已删除
+        set /a deleted+=1
+    )
+    if exist "%PUBLIC%\Desktop\Cursor.lnk" (
+        del /f /q "%PUBLIC%\Desktop\Cursor.lnk" >nul 2>&1
+        echo [OK] 公共桌面快捷方式已删除
+        set /a deleted+=1
+    )
+    
     echo 检查注册表...
     reg query "HKCU\Software\Cursor" >nul 2>&1
     if !errorlevel! equ 0 (
@@ -159,6 +183,18 @@ if "%clean_cn%"=="1" (
     call :CleanDir "%APPDATA%\Trae CN" "用户数据"
     call :CleanDir "%LOCALAPPDATA%\Programs\Trae CN" "安装目录"
     call :CleanDir "%USERPROFILE%\.trae-cn" "插件目录"
+    
+    echo 检查桌面快捷方式...
+    if exist "%USERPROFILE%\Desktop\Trae CN.lnk" (
+        del /f /q "%USERPROFILE%\Desktop\Trae CN.lnk" >nul 2>&1
+        echo [OK] 桌面快捷方式已删除
+        set /a deleted+=1
+    )
+    if exist "%PUBLIC%\Desktop\Trae CN.lnk" (
+        del /f /q "%PUBLIC%\Desktop\Trae CN.lnk" >nul 2>&1
+        echo [OK] 公共桌面快捷方式已删除
+        set /a deleted+=1
+    )
     
     echo 检查注册表...
     reg query "HKCU\Software\Trae CN" >nul 2>&1
