@@ -133,10 +133,18 @@ if "%clean_intl%"=="1" (
     reg query "HKCU\Software\Trae" >nul 2>&1
     if !errorlevel! equ 0 (
         reg delete "HKCU\Software\Trae" /f >nul 2>&1
-        echo [OK] 注册表已清理
+        echo [OK] 软件配置注册表已清理
         set /a deleted+=1
-    ) else (
-        echo [SKIP] 注册表无残留
+    )
+    
+    REM 清理控制面板卸载列表
+    for /f "tokens=*" %%a in ('reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall" /s /f "Trae" ^| findstr "HKEY_CURRENT_USER"') do (
+        reg query "%%a" /v "DisplayName" 2>nul | findstr /i "Trae" >nul 2>&1
+        if !errorlevel! equ 0 (
+            reg delete "%%a" /f >nul 2>&1
+            echo [OK] 控制面板卸载项已清理: %%a
+            set /a deleted+=1
+        )
     )
     echo.
 )
@@ -167,10 +175,18 @@ if "%clean_cursor%"=="1" (
     reg query "HKCU\Software\Cursor" >nul 2>&1
     if !errorlevel! equ 0 (
         reg delete "HKCU\Software\Cursor" /f >nul 2>&1
-        echo [OK] 注册表已清理
+        echo [OK] 软件配置注册表已清理
         set /a deleted+=1
-    ) else (
-        echo [SKIP] 注册表无残留
+    )
+    
+    REM 清理控制面板卸载列表
+    for /f "tokens=*" %%a in ('reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall" /s /f "Cursor" ^| findstr "HKEY_CURRENT_USER"') do (
+        reg query "%%a" /v "DisplayName" 2>nul | findstr /i "Cursor" >nul 2>&1
+        if !errorlevel! equ 0 (
+            reg delete "%%a" /f >nul 2>&1
+            echo [OK] 控制面板卸载项已清理: %%a
+            set /a deleted+=1
+        )
     )
     echo.
 )
@@ -200,10 +216,18 @@ if "%clean_cn%"=="1" (
     reg query "HKCU\Software\Trae CN" >nul 2>&1
     if !errorlevel! equ 0 (
         reg delete "HKCU\Software\Trae CN" /f >nul 2>&1
-        echo [OK] 注册表已清理
+        echo [OK] 软件配置注册表已清理
         set /a deleted+=1
-    ) else (
-        echo [SKIP] 注册表无残留
+    )
+    
+    REM 清理控制面板卸载列表
+    for /f "tokens=*" %%a in ('reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall" /s /f "Trae CN" ^| findstr "HKEY_CURRENT_USER"') do (
+        reg query "%%a" /v "DisplayName" 2>nul | findstr /i "Trae CN" >nul 2>&1
+        if !errorlevel! equ 0 (
+            reg delete "%%a" /f >nul 2>&1
+            echo [OK] 控制面板卸载项已清理: %%a
+            set /a deleted+=1
+        )
     )
     echo.
 )
