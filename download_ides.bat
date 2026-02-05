@@ -66,9 +66,9 @@ echo.
 echo 正在准备下载 !NAME!...
 echo 目标文件: !DOWNLOAD_DIR!\!FILENAME!
 echo.
-echo 正在使用 PowerShell 下载 (请稍候)...
+echo 正在尝试下载 (请稍候)...
 
-powershell -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; try { $client = New-Object System.Net.WebClient; $client.Headers.Add('User-Agent', 'Mozilla/5.0'); $client.DownloadFile('!URL!', '!DOWNLOAD_DIR!\!FILENAME!'); exit 0 } catch { Write-Error $_.Exception.Message; exit 1 }"
+curl -L -A "Mozilla/5.0" -o "!DOWNLOAD_DIR!\!FILENAME!" "!URL!"
 
 if !errorlevel! equ 0 (
     echo.
