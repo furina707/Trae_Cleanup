@@ -22,6 +22,11 @@ Trae, Cursor & Antigravity Cleanup Tool is a lightweight, open-source batch scri
   - Cleans Temporary Files.
 - **⚡ Zero Dependencies**: Pure Windows Batch script. No installation required.
 
+## 🛠️ Included Tools
+
+- **`clean_trae.bat`**: The main cleanup tool for removing IDE residue.
+- **`download_ides.bat`**: A handy script to quickly download or navigate to the latest installers for Trae, Cursor, and Antigravity.
+
 ## 📥 Installation & Usage
 
 1. **Download**: Get the latest `clean_trae.bat` from the [Releases](https://github.com/furina707/Trae_Cleanup/releases) or clone this repo.
