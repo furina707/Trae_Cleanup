@@ -8,15 +8,15 @@ if not exist "!DOWNLOAD_DIR!" mkdir "!DOWNLOAD_DIR!"
 :MENU
 cls
 echo ========================================
-echo   AI IDE 下载助手 (Trae, Cursor, Antigravity)
+echo   AI_IDE_Downloader
 echo ========================================
 echo.
 echo 请选择要下载的软件：
 echo.
-echo   1. Trae 国际版 (Official Website)
-echo   2. Trae 中文版 (Official Website)
-echo   3. Cursor IDE (Direct Download)
-echo   4. Antigravity IDE (Official Website)
+echo   1. Trae_Intl
+echo   2. Trae_CN
+echo   3. Cursor_IDE
+echo   4. Antigravity_IDE
 echo.
 echo   0. 返回
 echo.
@@ -78,7 +78,7 @@ if !errorlevel! equ 0 (
 ) else (
     echo.
     echo [ERROR] 直接下载失败，正在为您打开官方下载页面...
-    start !PAGE_URL!
+    start "" "!PAGE_URL!"
     pause
 )
 goto :eof
