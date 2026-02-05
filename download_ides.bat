@@ -28,23 +28,35 @@ set "choice="
 set /p choice=请输入选项编号: 
 
 if "!choice!"=="1" (
-    call :DownloadProcess "Trae 国际版" "Trae-Setup-x64.exe" "https://api.trae.ai/download/stable/windows/x64" "https://www.trae.ai/download"
-    goto MENU
+    set "NAME=Trae_Intl"
+    set "FILENAME=Trae-Setup-x64.exe"
+    set "URL=https://api.trae.ai/download/stable/windows/x64"
+    set "PAGE_URL=https://www.trae.ai/download"
+    goto StartDownload
 )
 
 if "!choice!"=="2" (
-    call :DownloadProcess "Trae 中文版" "Trae-CN-Setup-x64.exe" "https://api.trae.cn/download/stable/windows/x64" "https://www.trae.cn/download"
-    goto MENU
+    set "NAME=Trae_CN"
+    set "FILENAME=Trae-CN-Setup-x64.exe"
+    set "URL=https://api.trae.cn/download/stable/windows/x64"
+    set "PAGE_URL=https://www.trae.cn/download"
+    goto StartDownload
 )
 
 if "!choice!"=="3" (
-    call :DownloadProcess "Cursor IDE" "CursorSetup.exe" "https://downloader.cursor.sh/windows/nsis/x64" "https://cursor.com/download"
-    goto MENU
+    set "NAME=Cursor_IDE"
+    set "FILENAME=CursorSetup.exe"
+    set "URL=https://downloader.cursor.sh/windows/nsis/x64"
+    set "PAGE_URL=https://cursor.com/download"
+    goto StartDownload
 )
 
 if "!choice!"=="4" (
-    call :DownloadProcess "Antigravity IDE" "Antigravity-Setup-x64.exe" "https://antigravity.google/download" "https://antigravity.google/download"
-    goto MENU
+    set "NAME=Antigravity_IDE"
+    set "FILENAME=Antigravity-Setup-x64.exe"
+    set "URL=https://antigravity.google/download"
+    set "PAGE_URL=https://antigravity.google/download"
+    goto StartDownload
 )
 
 if "!choice!"=="0" exit /b
@@ -56,17 +68,13 @@ if not "!choice!"=="" (
 )
 goto MENU
 
-:DownloadProcess
-set "NAME=%~1"
-set "FILENAME=%~2"
-set "URL=%~3"
-set "PAGE_URL=%~4"
-
+:StartDownload
 echo.
 echo 正在准备下载 !NAME!...
 echo 目标文件: !DOWNLOAD_DIR!\!FILENAME!
 echo.
 echo 正在尝试下载 (请稍候)...
+echo.
 
 curl -L -A "Mozilla/5.0" -o "!DOWNLOAD_DIR!\!FILENAME!" "!URL!"
 
@@ -81,4 +89,4 @@ if !errorlevel! equ 0 (
     start "" "!PAGE_URL!"
     pause
 )
-goto :eof
+goto MENU
