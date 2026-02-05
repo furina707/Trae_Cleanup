@@ -5,7 +5,7 @@ setlocal EnableDelayedExpansion
 :MENU
 cls
 echo ========================================
-echo   Trae ^& Cursor 清理工具 (增强版)
+echo   Trae, Cursor ^& Antigravity 清理工具 (全能版)
 echo ========================================
 echo.
 echo [1/4] 正在扫描系统...
@@ -15,6 +15,7 @@ REM --- 初始化变量 ---
 set "intl_found=0"
 set "cn_found=0"
 set "cursor_found=0"
+set "anti_found=0"
 
 REM --- 扫描国际版 ---
 if exist "%APPDATA%\Trae" set "intl_found=1"
@@ -38,10 +39,19 @@ if exist "%USERPROFILE%\.cursor" set "cursor_found=1"
 reg query "HKCU\Software\Cursor" >nul 2>&1
 if !errorlevel! equ 0 set "cursor_found=1"
 
+REM --- 扫描 Antigravity ---
+if exist "%APPDATA%\Antigravity" set "anti_found=1"
+if exist "%LOCALAPPDATA%\Programs\Antigravity" set "anti_found=1"
+if exist "%USERPROFILE%\.antigravity" set "anti_found=1"
+if exist "%USERPROFILE%\.gemini\antigravity" set "anti_found=1"
+reg query "HKCU\Software\Antigravity" >nul 2>&1
+if !errorlevel! equ 0 set "anti_found=1"
+
 REM --- 设置显示状态 ---
 if "!intl_found!"=="1" (set "msg_intl=[已发现残余]") else (set "msg_intl=[未发现]")
 if "!cn_found!"=="1" (set "msg_cn=[已发现残余]") else (set "msg_cn=[未发现]")
 if "!cursor_found!"=="1" (set "msg_cursor=[已发现残余]") else (set "msg_cursor=[未发现]")
+if "!anti_found!"=="1" (set "msg_anti=[已发现残余]") else (set "msg_anti=[未发现]")
 
 echo 扫描完成。
 echo.
@@ -57,7 +67,10 @@ echo.
 echo   3. %msg_cursor% 清理 Cursor IDE
 echo      (用户数据、安装目录、插件 .cursor、注册表)
 echo.
-echo   4. 全部清理 (清理以上所有发现的残余)
+echo   4. %msg_anti% 清理 Antigravity IDE
+echo      (用户数据、安装目录、插件 .antigravity、注册表)
+echo.
+echo   5. 全部清理 (清理以上所有发现的残余)
 echo.
 echo   0. 退出
 echo.
@@ -70,17 +83,20 @@ if "%choice%"=="0" goto :eof
 set "clean_intl=0"
 set "clean_cn=0"
 set "clean_cursor=0"
+set "clean_anti=0"
 
 if "%choice%"=="1" set "clean_intl=1"
 if "%choice%"=="2" set "clean_cn=1"
 if "%choice%"=="3" set "clean_cursor=1"
-if "%choice%"=="4" (
+if "%choice%"=="4" set "clean_anti=1"
+if "%choice%"=="5" (
     set "clean_intl=1"
     set "clean_cn=1"
     set "clean_cursor=1"
+    set "clean_anti=1"
 )
 
-if "%clean_intl%"=="0" if "%clean_cn%"=="0" if "%clean_cursor%"=="0" goto MENU
+if "%clean_intl%"=="0" if "%clean_cn%"=="0" if "%clean_cursor%"=="0" if "%clean_anti%"=="0" goto MENU
 
 echo.
 echo [3/4] 正在关闭相关进程...
@@ -96,6 +112,10 @@ if "%clean_cn%"=="1" (
 if "%clean_cursor%"=="1" (
     taskkill /F /IM "Cursor.exe" >nul 2>&1
     echo 已尝试关闭 Cursor
+)
+if "%clean_anti%"=="1" (
+    taskkill /F /IM "Antigravity.exe" >nul 2>&1
+    echo 已尝试关闭 Antigravity
 )
 
 echo 等待进程释放资源...
@@ -140,6 +160,48 @@ if "%clean_intl%"=="1" (
     REM 清理控制面板卸载列表
     for /f "tokens=*" %%a in ('reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall" /s /f "Trae" ^| findstr "HKEY_CURRENT_USER"') do (
         reg query "%%a" /v "DisplayName" 2>nul | findstr /i "Trae" >nul 2>&1
+        if !errorlevel! equ 0 (
+            reg delete "%%a" /f >nul 2>&1
+            echo [OK] 控制面板卸载项已清理: %%a
+            set /a deleted+=1
+        )
+    )
+    echo.
+)
+
+REM ==========================================
+REM 清理 Antigravity
+REM ==========================================
+if "%clean_anti%"=="1" (
+    echo --- 正在清理 Antigravity ---
+    call :CleanDir "%APPDATA%\Antigravity" "用户数据"
+    call :CleanDir "%LOCALAPPDATA%\Programs\Antigravity" "安装目录"
+    call :CleanDir "%USERPROFILE%\.antigravity" "插件目录"
+    call :CleanDir "%USERPROFILE%\.gemini\antigravity" "Gemini相关数据"
+    
+    echo 检查桌面快捷方式...
+    if exist "%USERPROFILE%\Desktop\Antigravity.lnk" (
+        del /f /q "%USERPROFILE%\Desktop\Antigravity.lnk" >nul 2>&1
+        echo [OK] 桌面快捷方式已删除
+        set /a deleted+=1
+    )
+    if exist "%PUBLIC%\Desktop\Antigravity.lnk" (
+        del /f /q "%PUBLIC%\Desktop\Antigravity.lnk" >nul 2>&1
+        echo [OK] 公共桌面快捷方式已删除
+        set /a deleted+=1
+    )
+    
+    echo 检查注册表...
+    reg query "HKCU\Software\Antigravity" >nul 2>&1
+    if !errorlevel! equ 0 (
+        reg delete "HKCU\Software\Antigravity" /f >nul 2>&1
+        echo [OK] 软件配置注册表已清理
+        set /a deleted+=1
+    )
+    
+    REM 清理控制面板卸载列表
+    for /f "tokens=*" %%a in ('reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall" /s /f "Antigravity" ^| findstr "HKEY_CURRENT_USER"') do (
+        reg query "%%a" /v "DisplayName" 2>nul | findstr /i "Antigravity" >nul 2>&1
         if !errorlevel! equ 0 (
             reg delete "%%a" /f >nul 2>&1
             echo [OK] 控制面板卸载项已清理: %%a

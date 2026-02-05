@@ -1,22 +1,22 @@
-# Trae & Cursor Cleanup Tool 🧹
+# Trae, Cursor & Antigravity Cleanup Tool 🧹
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Platform](https://img.shields.io/badge/platform-Windows-lightgrey.svg)
 ![Batch](https://img.shields.io/badge/language-Batchfile-orange.svg)
 
-> **One-Click Cleanup Solution for Trae IDE (International & CN) and Cursor IDE**
+> **One-Click Cleanup Solution for Trae (Intl & CN), Cursor, and Antigravity IDEs**
 
-Trae & Cursor Cleanup Tool is a lightweight, open-source batch script designed to thoroughly remove configuration files, cached data, and registry entries for the Trae and Cursor IDEs. It intelligently distinguishes between different versions and IDEs, allowing for safe and targeted cleaning.
+Trae, Cursor & Antigravity Cleanup Tool is a lightweight, open-source batch script designed to thoroughly remove configuration files, cached data, and registry entries for various AI IDEs. It intelligently distinguishes between different versions and IDEs, allowing for safe and targeted cleaning.
 
 ## 🚀 Key Features
 
-- **🎯 Smart Detection**: Automatically scans and identifies existing Trae/Cursor installations and residue.
-- **☯️ Multi-IDE Support**: Independently manage **Trae International**, **Trae CN**, and **Cursor IDE**.
+- **🎯 Smart Detection**: Automatically scans and identifies existing installations and residue for all supported IDEs.
+- **☯️ Multi-IDE Support**: Independently manage **Trae International**, **Trae CN**, **Cursor IDE**, and **Antigravity IDE**.
 - **🛡️ Safe Cleaning**: 
   - Auto-terminates relevant processes.
   - Cleans `AppData\Roaming` & `AppData\Local` (User Data).
   - Cleans Installation directories.
-  - Cleans Extensions folders (`.trae`, `.trae-cn`, `.cursor`).
+  - Cleans Extensions folders (`.trae`, `.trae-cn`, `.cursor`, `.antigravity`).
   - Cleans Desktop Shortcuts.
   - Cleans Registry Keys (Config & Control Panel Uninstall List).
   - Cleans Temporary Files.
@@ -33,7 +33,8 @@ Trae & Cursor Cleanup Tool is a lightweight, open-source batch script designed t
    - `[1]` Clean Trae International 🌍
    - `[2]` Clean Trae CN (Chinese Version) 🇨🇳
    - `[3]` Clean Cursor IDE 🖱️
-   - `[4]` Full Cleanup (Nuke everything) 💥
+   - `[4]` Clean Antigravity IDE 🌌
+   - `[5]` Full Cleanup (Nuke everything) 💥
 
 ## 📸 Screenshots
 
