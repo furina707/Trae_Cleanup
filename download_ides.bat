@@ -5,6 +5,9 @@ setlocal EnableDelayedExpansion
 set "DOWNLOAD_DIR=%~dp0downloads"
 if not exist "!DOWNLOAD_DIR!" mkdir "!DOWNLOAD_DIR!"
 
+REM 强制切换到脚本所在目录，确保相对路径正确
+cd /d "%~dp0"
+
 :MENU
 cls
 echo ========================================
@@ -76,7 +79,8 @@ echo.
 echo 正在尝试下载 (请稍候)...
 echo.
 
-curl -L -A "Mozilla/5.0" -o "!DOWNLOAD_DIR!\!FILENAME!" "!URL!"
+REM 使用 --create-dirs 确保目录存在，并显示更详细的错误信息
+curl -L -A "Mozilla/5.0" --create-dirs -o "!DOWNLOAD_DIR!\!FILENAME!" "!URL!"
 
 if !errorlevel! equ 0 (
     echo.
