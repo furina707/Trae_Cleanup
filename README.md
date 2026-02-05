@@ -29,17 +29,12 @@ Trae, Cursor & Antigravity Cleanup Tool is a lightweight, open-source batch scri
 
 ## 📥 Installation & Usage
 
-1. **Download**: Get the latest `clean_trae.bat` from the [Releases](https://github.com/furina707/Trae_Cleanup/releases) or clone this repo.
+1. **Download**: Get the latest files from the [Releases](https://github.com/furina707/Trae_Cleanup/releases) or clone this repo.
    ```bash
    git clone https://github.com/furina707/Trae_Cleanup.git
    ```
-2. **Run**: Right-click `clean_trae.bat` and select **Run as Administrator**.
-3. **Select**:
-   - `[1]` Clean Trae International 🌍
-   - `[2]` Clean Trae CN (Chinese Version) 🇨🇳
-   - `[3]` Clean Cursor IDE 🖱️
-   - `[4]` Clean Antigravity IDE 🌌
-   - `[5]` Full Cleanup (Nuke everything) 💥
+2. **Run**: Right-click `start.bat` and select **Run as Administrator**.
+3. **Select**: Choose whether you want to **Clean** residue or **Download** the latest installers.
 
 ## 📸 Screenshots
 
