@@ -28,12 +28,12 @@ set "choice="
 set /p choice=请输入选项编号: 
 
 if "!choice!"=="1" (
-    call :DownloadProcess "Trae 国际版" "Trae-Setup-x64.exe" "https://lf-cdn.trae.ai/obj/trae-ai-us/pkg/app/releases/stable/latest/win32/Trae-Setup-x64.exe" "https://www.trae.ai/download"
+    call :DownloadProcess "Trae 国际版" "Trae-Setup-x64.exe" "https://api.trae.ai/download/stable/windows/x64" "https://www.trae.ai/download"
     goto MENU
 )
 
 if "!choice!"=="2" (
-    call :DownloadProcess "Trae 中文版" "Trae-CN-Setup-x64.exe" "https://lf-cdn.trae.com.cn/obj/trae-com-cn/pkg/app/releases/stable/latest/win32/Trae-Setup-x64.exe" "https://www.trae.cn/download"
+    call :DownloadProcess "Trae 中文版" "Trae-CN-Setup-x64.exe" "https://api.trae.cn/download/stable/windows/x64" "https://www.trae.cn/download"
     goto MENU
 )
 
@@ -68,7 +68,7 @@ echo 目标文件: !DOWNLOAD_DIR!\!FILENAME!
 echo.
 echo 正在使用 PowerShell 下载 (请稍候)...
 
-powershell -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; try { $resp = Invoke-WebRequest -Uri '!URL!' -Method Head -UserAgent 'Mozilla/5.0' -ErrorAction Stop; Invoke-WebRequest -Uri '!URL!' -OutFile '!DOWNLOAD_DIR!\!FILENAME!' -UserAgent 'Mozilla/5.0' -ErrorAction Stop; exit 0 } catch { Write-Error $_.Exception.Message; exit 1 }"
+powershell -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; try { $client = New-Object System.Net.WebClient; $client.Headers.Add('User-Agent', 'Mozilla/5.0'); $client.DownloadFile('!URL!', '!DOWNLOAD_DIR!\!FILENAME!'); exit 0 } catch { Write-Error $_.Exception.Message; exit 1 }"
 
 if !errorlevel! equ 0 (
     echo.
