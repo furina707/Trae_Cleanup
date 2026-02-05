@@ -2,11 +2,11 @@
 chcp 65001 >nul
 setlocal EnableDelayedExpansion
 
+REM 强制切换到脚本所在目录
+cd /d "%~dp0"
+
 set "DOWNLOAD_DIR=%~dp0downloads"
 if not exist "!DOWNLOAD_DIR!" mkdir "!DOWNLOAD_DIR!"
-
-REM 强制切换到脚本所在目录，确保相对路径正确
-cd /d "%~dp0"
 
 :MENU
 cls
@@ -30,38 +30,10 @@ echo.
 set "choice="
 set /p choice=请输入选项编号: 
 
-if "!choice!"=="1" (
-    set "NAME=Trae_Intl"
-    set "FILENAME=Trae-Setup-x64.exe"
-    set "URL=https://api.trae.ai/download/stable/windows/x64"
-    set "PAGE_URL=https://www.trae.ai/download"
-    goto StartDownload
-)
-
-if "!choice!"=="2" (
-    set "NAME=Trae_CN"
-    set "FILENAME=Trae-CN-Setup-x64.exe"
-    set "URL=https://api.trae.cn/download/stable/windows/x64"
-    set "PAGE_URL=https://www.trae.cn/download"
-    goto StartDownload
-)
-
-if "!choice!"=="3" (
-    set "NAME=Cursor_IDE"
-    set "FILENAME=CursorSetup.exe"
-    set "URL=https://downloader.cursor.sh/windows/nsis/x64"
-    set "PAGE_URL=https://cursor.com/download"
-    goto StartDownload
-)
-
-if "!choice!"=="4" (
-    set "NAME=Antigravity_IDE"
-    set "FILENAME=Antigravity-Setup-x64.exe"
-    set "URL=https://antigravity.google/download"
-    set "PAGE_URL=https://antigravity.google/download"
-    goto StartDownload
-)
-
+if "!choice!"=="1" goto Down_TraeIntl
+if "!choice!"=="2" goto Down_TraeCN
+if "!choice!"=="3" goto Down_Cursor
+if "!choice!"=="4" goto Down_Anti
 if "!choice!"=="0" exit /b
 
 if not "!choice!"=="" (
@@ -71,6 +43,34 @@ if not "!choice!"=="" (
 )
 goto MENU
 
+:Down_TraeIntl
+set "NAME=Trae_Intl"
+set "FILENAME=Trae-Setup-x64.exe"
+set "URL=https://api.trae.ai/download/stable/windows/x64"
+set "PAGE_URL=https://www.trae.ai/download"
+goto StartDownload
+
+:Down_TraeCN
+set "NAME=Trae_CN"
+set "FILENAME=Trae-CN-Setup-x64.exe"
+set "URL=https://api.trae.cn/download/stable/windows/x64"
+set "PAGE_URL=https://www.trae.cn/download"
+goto StartDownload
+
+:Down_Cursor
+set "NAME=Cursor_IDE"
+set "FILENAME=CursorSetup.exe"
+set "URL=https://downloader.cursor.sh/windows/nsis/x64"
+set "PAGE_URL=https://cursor.com/download"
+goto StartDownload
+
+:Down_Anti
+set "NAME=Antigravity_IDE"
+set "FILENAME=Antigravity-Setup-x64.exe"
+set "URL=https://antigravity.google/download"
+set "PAGE_URL=https://antigravity.google/download"
+goto StartDownload
+
 :StartDownload
 echo.
 echo 正在准备下载 !NAME!...
@@ -79,7 +79,7 @@ echo.
 echo 正在尝试下载 (请稍候)...
 echo.
 
-REM 使用 --create-dirs 确保目录存在，并显示更详细的错误信息
+REM 移除注释行以避免某些环境下的解析错误
 curl -L -A "Mozilla/5.0" --create-dirs -o "!DOWNLOAD_DIR!\!FILENAME!" "!URL!"
 
 if !errorlevel! equ 0 (
