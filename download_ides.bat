@@ -24,29 +24,36 @@ echo ----------------------------------------
 echo 下载目录: !DOWNLOAD_DIR!
 echo ----------------------------------------
 echo.
+set "choice="
 set /p choice=请输入选项编号: 
 
-if "%choice%"=="1" (
+if "!choice!"=="1" (
     call :DownloadProcess "Trae 国际版" "Trae-Setup-x64.exe" "https://lf-cdn.trae.ai/obj/trae-ai-us/pkg/app/releases/stable/1.0.27572/win32/Trae-Setup-x64.exe" "https://www.trae.ai/download"
     goto MENU
 )
 
-if "%choice%"=="2" (
+if "!choice!"=="2" (
     call :DownloadProcess "Trae 中文版" "Trae-CN-Setup-x64.exe" "https://lf-cdn.trae.com.cn/obj/trae-com-cn/pkg/app/releases/stable/1.0.27572/win32/Trae-Setup-x64.exe" "https://www.trae.cn/download"
     goto MENU
 )
 
-if "%choice%"=="3" (
+if "!choice!"=="3" (
     call :DownloadProcess "Cursor IDE" "CursorSetup.exe" "https://downloader.cursor.sh/windows/nsis/x64" "https://cursor.com/download"
     goto MENU
 )
 
-if "%choice%"=="4" (
+if "!choice!"=="4" (
     call :DownloadProcess "Antigravity IDE" "Antigravity-Setup-x64.exe" "https://antigravity.google/download" "https://antigravity.google/download"
     goto MENU
 )
 
-if "%choice%"=="0" exit /b
+if "!choice!"=="0" exit /b
+
+if not "!choice!"=="" (
+    echo.
+    echo [ERROR] 无效的选择: !choice!
+    timeout /t 2 >nul
+)
 goto MENU
 
 :DownloadProcess

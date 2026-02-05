@@ -20,9 +20,10 @@ echo.
 echo   0. 退出
 echo.
 echo ----------------------------------------
+set "tool_choice="
 set /p tool_choice=请输入选项编号: 
 
-if "%tool_choice%"=="1" (
+if "!tool_choice!"=="1" (
     if exist "clean_trae.bat" (
         call clean_trae.bat
     ) else (
@@ -32,7 +33,7 @@ if "%tool_choice%"=="1" (
     goto START_MENU
 )
 
-if "%tool_choice%"=="2" (
+if "!tool_choice!"=="2" (
     if exist "download_ides.bat" (
         call download_ides.bat
     ) else (
@@ -42,5 +43,11 @@ if "%tool_choice%"=="2" (
     goto START_MENU
 )
 
-if "%tool_choice%"=="0" exit /b
+if "!tool_choice!"=="0" exit /b
+
+if not "!tool_choice!"=="" (
+    echo.
+    echo [ERROR] 无效的选择: !tool_choice!
+    timeout /t 2 >nul
+)
 goto START_MENU

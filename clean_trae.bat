@@ -74,29 +74,34 @@ echo   5. 全部清理 (清理以上所有发现的残余)
 echo.
 echo   0. 退出
 echo.
-echo 请输入选项编号 (例如: 1)，按 Enter 键确认：
-set /p choice=
+echo 请输入选项编号 (例如: 1)，或输入 0 退出:
+set "choice="
+set /p choice=^> 
 
-if "%choice%"=="" goto MENU
-if "%choice%"=="0" goto :eof
+if "!choice!"=="" goto MENU
+if "!choice!"=="0" goto :eof
 
 set "clean_intl=0"
 set "clean_cn=0"
 set "clean_cursor=0"
 set "clean_anti=0"
 
-if "%choice%"=="1" set "clean_intl=1"
-if "%choice%"=="2" set "clean_cn=1"
-if "%choice%"=="3" set "clean_cursor=1"
-if "%choice%"=="4" set "clean_anti=1"
-if "%choice%"=="5" (
+if "!choice!"=="1" set "clean_intl=1"
+if "!choice!"=="2" set "clean_cn=1"
+if "!choice!"=="3" set "clean_cursor=1"
+if "!choice!"=="4" set "clean_anti=1"
+if "!choice!"=="5" (
     set "clean_intl=1"
     set "clean_cn=1"
     set "clean_cursor=1"
     set "clean_anti=1"
 )
 
-if "%clean_intl%"=="0" if "%clean_cn%"=="0" if "%clean_cursor%"=="0" if "%clean_anti%"=="0" goto MENU
+if "!clean_intl!"=="0" if "!clean_cn!"=="0" if "!clean_cursor!"=="0" if "!clean_anti!"=="0" (
+    echo [ERROR] 无效的选择: !choice!
+    timeout /t 2 >nul
+    goto MENU
+)
 
 echo.
 echo [3/4] 正在关闭相关进程...
