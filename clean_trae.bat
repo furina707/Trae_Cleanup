@@ -163,7 +163,7 @@ if "%clean_intl%"=="1" (
     )
     
     REM 清理控制面板卸载列表
-    for /f "tokens=*" %%a in ('reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall" /s /f "Trae" ^| findstr "HKEY_CURRENT_USER"') do (
+    for /f "tokens=*" %%a in ('reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall" /s /f "Trae" 2^>nul ^| findstr "HKEY_CURRENT_USER"') do (
         reg query "%%a" /v "DisplayName" 2>nul | findstr /i "Trae" >nul 2>&1
         if !errorlevel! equ 0 (
             reg delete "%%a" /f >nul 2>&1
@@ -205,7 +205,7 @@ if "%clean_anti%"=="1" (
     )
     
     REM 清理控制面板卸载列表
-    for /f "tokens=*" %%a in ('reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall" /s /f "Antigravity" ^| findstr "HKEY_CURRENT_USER"') do (
+    for /f "tokens=*" %%a in ('reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall" /s /f "Antigravity" 2^>nul ^| findstr "HKEY_CURRENT_USER"') do (
         reg query "%%a" /v "DisplayName" 2>nul | findstr /i "Antigravity" >nul 2>&1
         if !errorlevel! equ 0 (
             reg delete "%%a" /f >nul 2>&1
@@ -247,7 +247,7 @@ if "%clean_cursor%"=="1" (
     )
     
     REM 清理控制面板卸载列表
-    for /f "tokens=*" %%a in ('reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall" /s /f "Cursor" ^| findstr "HKEY_CURRENT_USER"') do (
+    for /f "tokens=*" %%a in ('reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall" /s /f "Cursor" 2^>nul ^| findstr "HKEY_CURRENT_USER"') do (
         reg query "%%a" /v "DisplayName" 2>nul | findstr /i "Cursor" >nul 2>&1
         if !errorlevel! equ 0 (
             reg delete "%%a" /f >nul 2>&1
@@ -288,7 +288,7 @@ if "%clean_cn%"=="1" (
     )
     
     REM 清理控制面板卸载列表
-    for /f "tokens=*" %%a in ('reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall" /s /f "Trae CN" ^| findstr "HKEY_CURRENT_USER"') do (
+    for /f "tokens=*" %%a in ('reg query "HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall" /s /f "Trae CN" 2^>nul ^| findstr "HKEY_CURRENT_USER"') do (
         reg query "%%a" /v "DisplayName" 2>nul | findstr /i "Trae CN" >nul 2>&1
         if !errorlevel! equ 0 (
             reg delete "%%a" /f >nul 2>&1
