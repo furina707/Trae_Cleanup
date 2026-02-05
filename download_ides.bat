@@ -27,101 +27,51 @@ echo.
 set /p choice=请输入选项编号: 
 
 if "%choice%"=="1" (
-    echo.
-    echo 正在准备下载 Trae 国际版...
-    set "filename=Trae-Setup-x64.exe"
-    set "url=https://lf-cdn.trae.ai/obj/trae-ai-us/pkg/app/releases/stable/1.0.27572/win32/Trae-Setup-x64.exe"
-    echo 目标文件: !DOWNLOAD_DIR!\!filename!
-    echo.
-    echo 正在使用 PowerShell 下载 (请稍候)...
-    powershell -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; try { Invoke-WebRequest -Uri '!url!' -OutFile '!DOWNLOAD_DIR!\!filename!' -UserAgent 'Mozilla/5.0' -ErrorAction Stop; exit 0 } catch { exit 1 }"
-    if !errorlevel! equ 0 (
-        echo.
-        echo [OK] 下载完成: !DOWNLOAD_DIR!\!filename!
-        echo 是否现在安装? (Y/N)
-        set /p install=
-        if /i "!install!"=="Y" start "" "!DOWNLOAD_DIR!\!filename!"
-    ) else (
-        echo.
-        echo [ERROR] 直接下载失败，正在为您打开官方下载页面...
-        start https://www.trae.ai/download
-        pause
-    )
+    call :DownloadProcess "Trae 国际版" "Trae-Setup-x64.exe" "https://lf-cdn.trae.ai/obj/trae-ai-us/pkg/app/releases/stable/1.0.27572/win32/Trae-Setup-x64.exe" "https://www.trae.ai/download"
     goto MENU
 )
 
 if "%choice%"=="2" (
-    echo.
-    echo 正在准备下载 Trae 中文版...
-    set "filename=Trae-CN-Setup-x64.exe"
-    set "url=https://lf-cdn.trae.com.cn/obj/trae-com-cn/pkg/app/releases/stable/1.0.27572/win32/Trae-Setup-x64.exe"
-    echo 目标文件: !DOWNLOAD_DIR!\!filename!
-    echo.
-    echo 正在使用 PowerShell 下载 (请稍候)...
-    powershell -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; try { Invoke-WebRequest -Uri '!url!' -OutFile '!DOWNLOAD_DIR!\!filename!' -UserAgent 'Mozilla/5.0' -ErrorAction Stop; exit 0 } catch { exit 1 }"
-    if !errorlevel! equ 0 (
-        echo.
-        echo [OK] 下载完成: !DOWNLOAD_DIR!\!filename!
-        echo 是否现在安装? (Y/N)
-        set /p install=
-        if /i "!install!"=="Y" start "" "!DOWNLOAD_DIR!\!filename!"
-    ) else (
-        echo.
-        echo [ERROR] 直接下载失败，正在为您打开官方下载页面...
-        start https://www.trae.cn/download
-        pause
-    )
+    call :DownloadProcess "Trae 中文版" "Trae-CN-Setup-x64.exe" "https://lf-cdn.trae.com.cn/obj/trae-com-cn/pkg/app/releases/stable/1.0.27572/win32/Trae-Setup-x64.exe" "https://www.trae.cn/download"
     goto MENU
 )
 
 if "%choice%"=="3" (
-    echo.
-    echo 正在准备下载 Cursor IDE...
-    set "filename=CursorSetup.exe"
-    set "url=https://downloader.cursor.sh/windows/nsis/x64"
-    echo 目标文件: !DOWNLOAD_DIR!\!filename!
-    echo.
-    echo 正在使用 PowerShell 下载 (请稍候)...
-    powershell -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; try { Invoke-WebRequest -Uri '!url!' -OutFile '!DOWNLOAD_DIR!\!filename!' -UserAgent 'Mozilla/5.0' -ErrorAction Stop; exit 0 } catch { exit 1 }"
-    if !errorlevel! equ 0 (
-        echo.
-        echo [OK] 下载完成: !DOWNLOAD_DIR!\!filename!
-        echo 是否现在安装? (Y/N)
-        set /p install=
-        if /i "!install!"=="Y" start "" "!DOWNLOAD_DIR!\!filename!"
-    ) else (
-        echo.
-        echo [ERROR] 下载失败，正在为您打开官方下载页面...
-        start https://cursor.com/download
-        pause
-    )
+    call :DownloadProcess "Cursor IDE" "CursorSetup.exe" "https://downloader.cursor.sh/windows/nsis/x64" "https://cursor.com/download"
     goto MENU
 )
 
 if "%choice%"=="4" (
-    echo.
-    echo 正在准备下载 Antigravity IDE...
-    set "filename=Antigravity-Setup-x64.exe"
-    set "url=https://antigravity.google/download"
-    echo 目标文件: !DOWNLOAD_DIR!\!filename!
-    echo.
-    echo 注意: Antigravity 可能会引导至浏览器进行最终下载。
-    echo 正在尝试直接获取下载流...
-    powershell -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; try { Invoke-WebRequest -Uri '!url!' -OutFile '!DOWNLOAD_DIR!\!filename!' -UserAgent 'Mozilla/5.0' -ErrorAction Stop; exit 0 } catch { exit 1 }"
-    if !errorlevel! equ 0 (
-        echo.
-        echo [OK] 下载完成: !DOWNLOAD_DIR!\!filename!
-        echo 是否现在安装? (Y/N)
-        set /p install=
-        if /i "!install!"=="Y" start "" "!DOWNLOAD_DIR!\!filename!"
-    ) else (
-        echo.
-        echo [INFO] 无法直接下载，正在为您打开官方下载页面...
-        start https://antigravity.google/download
-        pause
-    )
+    call :DownloadProcess "Antigravity IDE" "Antigravity-Setup-x64.exe" "https://antigravity.google/download" "https://antigravity.google/download"
     goto MENU
 )
 
 if "%choice%"=="0" exit /b
 goto MENU
+
+:DownloadProcess
+set "NAME=%~1"
+set "FILENAME=%~2"
+set "URL=%~3"
+set "PAGE_URL=%~4"
+
+echo.
+echo 正在准备下载 !NAME!...
+echo 目标文件: !DOWNLOAD_DIR!\!FILENAME!
+echo.
+echo 正在使用 PowerShell 下载 (请稍候)...
+
+powershell -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; try { Invoke-WebRequest -Uri '!URL!' -OutFile '!DOWNLOAD_DIR!\!FILENAME!' -UserAgent 'Mozilla/5.0' -ErrorAction Stop; exit 0 } catch { exit 1 }"
+
+if !errorlevel! equ 0 (
+    echo.
+    echo [OK] 下载完成: !DOWNLOAD_DIR!\!FILENAME!
+    set /p install=是否现在安装? (Y/N): 
+    if /i "!install!"=="Y" start "" "!DOWNLOAD_DIR!\!FILENAME!"
+) else (
+    echo.
+    echo [ERROR] 直接下载失败，正在为您打开官方下载页面...
+    start !PAGE_URL!
+    pause
+)
+goto :eof
